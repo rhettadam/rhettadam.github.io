@@ -480,38 +480,6 @@ function navigateToPreviousSection() {
     handleNavigation(prevId);
 }
 
-// Add some Easter eggs
-function addEasterEggs() {
-    // Konami code easter egg
-    let konamiCode = [];
-    const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-    
-    document.addEventListener('keydown', (e) => {
-        konamiCode.push(e.code);
-        if (konamiCode.length > konamiSequence.length) {
-            konamiCode.shift();
-        }
-        
-        if (konamiCode.join(',') === konamiSequence.join(',')) {
-            // Trigger easter egg
-            document.body.style.animation = 'rainbow 2s infinite';
-            setTimeout(() => {
-                document.body.style.animation = '';
-            }, 2000);
-        }
-    });
-    
-    // Add rainbow animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
 // Utility to show only one section by id
 function showOnlySection(sectionId) {
     const sections = document.querySelectorAll('.section');
@@ -525,23 +493,6 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
     addInteractiveFeatures();
     addKeyboardNavigation();
-    addEasterEggs();
-    
-    // Add a welcome message in console
-    console.log(`
-    🚀 Welcome to your personal website!
-    
-    Navigation shortcuts:
-    - Alt + Arrow Keys: Navigate between sections
-    - Alt + H: Home
-    - Alt + A: About
-    - Alt + P: Projects
-    - Alt + C: Contact
-    
-    Easter egg: Try the Konami code! (↑↑↓↓←→←→BA)
-    
-    Made with ❤️ and JavaScript
-    `);
 });
 
 // Handle window resize

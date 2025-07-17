@@ -135,8 +135,9 @@ const CONFIG = {
     // Graphics & Art Galleries
     graphics: [
         { folder: '1912', title: '1912 Gallery' },
-        { folder: 'nc2', title: 'NC2 Gallery' },
-        { folder: 'peekorobo', title: 'Peekorobo Gallery' }
+        { folder: 'nc2', title: 'NC² Gallery' },
+        { folder: 'peekorobo', title: 'Peekorobo Gallery' },
+        { folder: 'csvue', title: 'CSVUE Gallery' }
     ]
 };
 

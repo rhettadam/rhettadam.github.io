@@ -41,7 +41,6 @@
             background: #181818;
             border-top: 1px solid #222;
         }
-        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -113,7 +112,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <header class="header">
             <div class="header-left">
                 <div class="domain"><a href="index.html">rhettadam.github.io</a></div>
@@ -129,16 +127,14 @@
             </div>
         </header>
         <div class="separator"></div>
-        <!-- Main Content -->
         <main class="main-content">
             <section class="section active">
                 <h2 id="gallery-title">Gallery</h2>
-                <a href="index.html#graphics" id="back-to-galleries" style="display:inline-block;margin-bottom:1.5rem;background:#222;color:#fff;border:none;border-radius:6px;padding:0.5rem 1.2rem;font-size:1rem;cursor:pointer;text-decoration:none;">&larr; Back to Galleries</a>
+                <a href="index.html#graphics" id="back-to-galleries" class="modal-close" style="margin-bottom:1.5rem;display:inline-block;">&larr; Back to Galleries</a>
                 <div class="gallery-grid"></div>
             </section>
         </main>
     </div>
-    <!-- Modal for full image view -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <img src="" alt="" class="modal-img" id="modal-img">
@@ -182,7 +178,6 @@
         const res = await fetch('static/graphics/graphics-manifest.json');
         const manifest = await res.json();
         let images = manifest[galleryName] || [];
-        // Support both array of strings and array of objects
         images = images.map(img => {
             if (typeof img === 'string') {
                 return { path: img, title: img.split('/').pop().split('.')[0], description: '' };
