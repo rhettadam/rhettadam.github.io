@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Personal Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="domain">yourname.org*</div>
+                <nav class="navigation">
+                    <a href="#home" class="nav-link active">/home</a>
+                    <a href="#about" class="nav-link">/about</a>
+                    <a href="#projects" class="nav-link">/projects</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="datetime" id="datetime"></div>
+            </div>
+        </header>
+
+        <div class="separator"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Section -->
+            <section id="home" class="section active">
+                <div class="profile-section">
+                    <div class="profile-image">
+                        <img src="static/pfp.jpg" alt="Profile Picture" id="profile-pic">
+                        <div class="profile-name">Rhett Adam</div>
+                        <div class="profile-age" id="age">Calculating...</div>
+                    </div>
+                </div>
+
+                <div class="quick-links">
+                    <div class="links">
+                        <a href="https://github.com/yourusername" class="link-item">
+                            <span class="link-label">GitHub:</span>
+                            <span class="link-value">github.com/yourusername</span>
+                        </a>
+                        <a href="mailto:rhettadambusiness@gmail.com" class="link-item">
+                            <span class="link-label">Email:</span>
+                            <span class="link-value">rhettadambusiness@gmail.com</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="skills-section">
+                    <div class="skills-grid">
+                        <div class="skill-item" data-skill="python">
+                            <div class="skill-icon">🐍</div>
+                            <span>PYTHON</span>
+                        </div>
+                        <div class="skill-item" data-skill="javascript">
+                            <div class="skill-icon">⚡</div>
+                            <span>JAVASCRIPT</span>
+                        </div>
+                        <div class="skill-item" data-skill="html">
+                            <div class="skill-icon">🌐</div>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="skill-item" data-skill="css">
+                            <div class="skill-icon">🎨</div>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="skill-item" data-skill="react">
+                            <div class="skill-icon">⚛️</div>
+                            <span>REACT</span>
+                        </div>
+                        <div class="skill-item" data-skill="node">
+                            <div class="skill-icon">🟢</div>
+                            <span>NODE.JS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-message">
+                    <p>✨ Building the future, one line of code at a time ✨</p>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="section">
+                <h2>About</h2>
+                <div class="about-content">
+                    <p>Hello! I'm a passionate developer who loves creating meaningful solutions through code.</p>
+                    <p>When I'm not coding, you can find me exploring new technologies, contributing to open source projects, or sharing knowledge with the developer community.</p>
+                    
+                    <h3>Experience</h3>
+                    <div class="experience-item">
+                        <div class="exp-title">Software Developer</div>
+                        <div class="exp-company">Company Name</div>
+                        <div class="exp-period">2023 - Present</div>
+                    </div>
+                    
+                    <h3>Education</h3>
+                    <div class="education-item">
+                        <div class="edu-degree">Bachelor's in Computer Science</div>
+                        <div class="edu-school">University Name</div>
+                        <div class="edu-period">2020 - 2024</div>
+                    </div>
+                    
+                    <h3>Honors and Awards</h3>
+                    <div class="awards-list" id="awards-list">
+                        <!-- Awards will be populated from config -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="section">
+                <h2>Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://via.placeholder.com/300x200/2a2a2a/4a9eff?text=Project+1" alt="Project 1">
+                        </div>
+                        <div class="project-info">
+                            <h3>Project Name</h3>
+                            <p>A brief description of what this project does and the technologies used.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">Live Demo</a>
+                                <a href="#" class="project-link">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://via.placeholder.com/300x200/2a2a2a/4a9eff?text=Project+2" alt="Project 2">
+                        </div>
+                        <div class="project-info">
+                            <h3>Another Project</h3>
+                            <p>Another cool project description with details about the implementation.</p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">Live Demo</a>
+                                <a href="#" class="project-link">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
