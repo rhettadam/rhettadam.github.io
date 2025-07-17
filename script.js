@@ -45,15 +45,15 @@ function handleNavigation(targetId) {
     // Remove active class from all sections and nav links
     sections.forEach(section => section.classList.remove('active'));
     navLinks.forEach(link => link.classList.remove('active'));
-    
+
     // Add active class to target section and nav link
     const targetSection = document.getElementById(targetId);
     const targetNavLink = document.querySelector(`[href="#${targetId}"]`);
-    
+
     if (targetSection) {
         targetSection.classList.add('active');
     }
-    
+
     if (targetNavLink) {
         targetNavLink.classList.add('active');
     }
@@ -194,10 +194,73 @@ function populateProjects() {
     });
 }
 
+// Fetch and cache the graphics manifest
+let graphicsManifest = null;
+async function fetchGraphicsManifest() {
+    if (graphicsManifest) return graphicsManifest;
+    const res = await fetch('static/graphics/graphics-manifest.json');
+    graphicsManifest = await res.json();
+    return graphicsManifest;
+}
+
+// Populate graphics galleries as cards (one per folder)
+async function populateGraphicsGalleries() {
+    console.log('populateGraphicsGalleries called');
+    const galleriesContainer = document.querySelector('.graphics-galleries');
+    if (!galleriesContainer || !CONFIG.graphics) return;
+    galleriesContainer.innerHTML = '';
+    // Load manifest once
+    const res = await fetch('static/graphics/graphics-manifest.json');
+    const manifest = await res.json();
+    for (const gallery of CONFIG.graphics) {
+        const card = document.createElement('a');
+        card.className = 'gallery gallery-card';
+        card.href = `gallery.html?name=${encodeURIComponent(gallery.folder)}`;
+        // Get up to 4 images for collage
+        const images = manifest[gallery.folder] ? manifest[gallery.folder].slice(0, 4) : [];
+        let collageHTML = '';
+        if (images.length > 0) {
+            collageHTML = `<div class="gallery-collage">${images.map(img => `<img src="${img}" class="collage-img">`).join('')}</div>`;
+        }
+        card.innerHTML = `<div class=\"gallery-title\">${gallery.title}</div>${collageHTML}`;
+        galleriesContainer.appendChild(card);
+    }
+}
+
+// Show a single gallery view
+async function showGalleryView(folder, title) {
+    const manifest = await fetchGraphicsManifest();
+    const images = manifest[folder] || [];
+    console.log('Images for', folder, images); // Debug log
+    document.getElementById('gallery-title').textContent = title;
+    const imagesContainer = document.querySelector('#gallery-view .gallery-images');
+    imagesContainer.innerHTML = '';
+    images.forEach(imgPath => {
+        const img = document.createElement('img');
+        img.src = imgPath;
+        img.className = 'gallery-image';
+        imagesContainer.appendChild(img);
+    });
+    // Hide main graphics, show gallery view
+    showOnlySection('gallery-view');
+}
+
+// Back to galleries
+function setupGalleryBackButton() {
+    const btn = document.getElementById('back-to-galleries');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            showOnlySection('graphics');
+        });
+    }
+}
+
 // Initialize the website
 function init() {
     // Populate content from config
     populateContent();
+    populateGraphicsGalleries();
+    setupGalleryBackButton();
     
     // Update datetime immediately and then every second
     updateDateTime();
@@ -447,6 +510,14 @@ function addEasterEggs() {
         }
     `;
     document.head.appendChild(style);
+}
+
+// Utility to show only one section by id
+function showOnlySection(sectionId) {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => section.classList.remove('active'));
+    const target = document.getElementById(sectionId);
+    if (target) target.classList.add('active');
 }
 
 // Initialize everything when DOM is loaded

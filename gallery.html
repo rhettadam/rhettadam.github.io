@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .gallery-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #181818;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            transition: box-shadow 0.2s;
+        }
+        .gallery-item:hover {
+            box-shadow: 0 8px 32px rgba(74, 158, 255, 0.25);
+        }
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background: #222;
+            cursor: pointer;
+        }
+        .gallery-caption {
+            width: 100%;
+            text-align: center;
+            padding: 0.5rem 0.25rem 0.5rem 0.25rem;
+            font-size: 1rem;
+            color: #e6d5c3;
+            background: #181818;
+            border-top: 1px solid #222;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(.4,0,.2,1);
+        }
+        .modal.active {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: #181818;
+            border-radius: 12px;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(74, 158, 255, 0.25);
+            opacity: 0;
+            transform: scale(0.97) translateY(20px);
+            transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+        }
+        .modal.active .modal-content {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        .modal-img {
+            max-width: 60vw;
+            max-height: 60vh;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            background: #222;
+        }
+        .modal-title {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        .modal-desc {
+            color: #e6d5c3;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .modal-close {
+            margin-top: 0.5rem;
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="domain"><a href="index.html">rhettadam.github.io</a></div>
+                <nav class="navigation">
+                    <a href="index.html#home" class="nav-link">/home</a>
+                    <a href="index.html#about" class="nav-link">/about</a>
+                    <a href="index.html#projects" class="nav-link">/projects</a>
+                    <a href="index.html#graphics" class="nav-link">/graphics</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="datetime" id="datetime"></div>
+            </div>
+        </header>
+        <div class="separator"></div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="section active">
+                <h2 id="gallery-title">Gallery</h2>
+                <a href="index.html#graphics" id="back-to-galleries" style="display:inline-block;margin-bottom:1.5rem;background:#222;color:#fff;border:none;border-radius:6px;padding:0.5rem 1.2rem;font-size:1rem;cursor:pointer;text-decoration:none;">&larr; Back to Galleries</a>
+                <div class="gallery-grid"></div>
+            </section>
+        </main>
+    </div>
+    <!-- Modal for full image view -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <img src="" alt="" class="modal-img" id="modal-img">
+            <div class="modal-title" id="modal-title"></div>
+            <div class="modal-desc" id="modal-desc"></div>
+            <button class="modal-close" id="modal-close">Close</button>
+        </div>
+    </div>
+    <script>
+    // Date/time for header
+    function updateDateTime() {
+        const datetimeElement = document.getElementById('datetime');
+        if (!datetimeElement) return;
+        const now = new Date();
+        const options = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        };
+        datetimeElement.textContent = now.toLocaleDateString('en-US', options);
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Get gallery name from query string
+    function getGalleryName() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('name');
+    }
+    async function loadGallery() {
+        const galleryName = getGalleryName();
+        if (!galleryName) {
+            document.getElementById('gallery-title').textContent = 'Gallery Not Found';
+            return;
+        }
+        // Fetch manifest
+        const res = await fetch('static/graphics/graphics-manifest.json');
+        const manifest = await res.json();
+        let images = manifest[galleryName] || [];
+        // Support both array of strings and array of objects
+        images = images.map(img => {
+            if (typeof img === 'string') {
+                return { path: img, title: img.split('/').pop().split('.')[0], description: '' };
+            }
+            return img;
+        });
+        document.getElementById('gallery-title').textContent = galleryName.charAt(0).toUpperCase() + galleryName.slice(1) + ' Gallery';
+        const grid = document.querySelector('.gallery-grid');
+        grid.innerHTML = '';
+        images.forEach((img, idx) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <img src="${img.path}" alt="${img.title}" class="gallery-img" data-idx="${idx}">
+                <div class="gallery-caption">${img.title || ''}</div>
+            `;
+            grid.appendChild(item);
+        });
+        // Modal logic
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalClose = document.getElementById('modal-close');
+        document.querySelectorAll('.gallery-img').forEach((imgEl, i) => {
+            imgEl.addEventListener('click', () => {
+                const imgData = images[i];
+                modalImg.src = imgData.path;
+                modalTitle.textContent = imgData.title || '';
+                modalDesc.textContent = imgData.description || '';
+                modal.classList.add('active');
+            });
+        });
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') modal.classList.remove('active');
+        });
+    }
+    loadGallery();
+    </script>
+</body>
+</html> 

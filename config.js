@@ -51,6 +51,13 @@ const CONFIG = {
             image: "static/projects/nc2.gif",
             liveDemo: "#",
             github: "https://github.com/rhettadam/nc2"
+        },
+        {
+            name: "7525 When2Meet",
+            description: "A When2Meet-like web app specifically for students and mentors on FRC Team 7525 The Pioneers",
+            image: "static/projects/when2meet.png",
+            liveDemo: "#",
+            github: "https://github.com/rhettadam/When2Meet7525"
         }
     ],
     
@@ -123,7 +130,14 @@ const CONFIG = {
         secondary: "#1a1a1a",
         text: "#ffffff",
         muted: "#888888"
-    }
+    },
+
+    // Graphics & Art Galleries
+    graphics: [
+        { folder: '1912', title: '1912 Gallery' },
+        { folder: 'nc2', title: 'NC2 Gallery' },
+        { folder: 'peekorobo', title: 'Peekorobo Gallery' }
+    ]
 };
 
 // Export for use in other files
