@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Personal Website</title>
+    <title>radam - a website</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <div class="domain">yourname.org*</div>
+                <div class="domain">rhettadam.github.io</div>
                 <nav class="navigation">
                     <a href="#home" class="nav-link active">/home</a>
                     <a href="#about" class="nav-link">/about</a>
@@ -32,13 +32,26 @@
         <main class="main-content">
             <!-- Home Section -->
             <section id="home" class="section active">
-                <div class="profile-section">
-                    <div class="profile-image">
-                        <img src="static/pfp.jpg" alt="Profile Picture" id="profile-pic">
-                        <div class="profile-name">Rhett Adam</div>
-                        <div class="profile-age" id="age">Calculating...</div>
-                    </div>
+              <div class="home-flex">
+                <div class="profile-col">
+                  <div class="profile-section">
+                      <div class="profile-image">
+                          <img src="static/pfp.jpg" alt="Profile Picture" id="profile-pic">
+                          <div class="profile-name">Rhett Adam</div>
+                          <div class="profile-age" id="age">Calculating...</div>
+                          <div class="profile-description">
+                              robotics nerd<br>
+                              data wrangler<br>
+                              FRC 7525/7917 mentor<br>
+                              FRC 1912 alum<br>
+                          </div>
+                      </div>
+                  </div>
                 </div>
+                <div class="globe-col">
+                  <div id="globe-container"></div>
+                </div>
+              </div>
 
                 <div class="quick-links">
                     <div class="links">
@@ -55,40 +68,12 @@
 
                 <div class="skills-section">
                     <div class="skills-grid">
-                        <div class="skill-item" data-skill="python">
-                            <div class="skill-icon">🐍</div>
-                            <span>PYTHON</span>
-                        </div>
-                        <div class="skill-item" data-skill="javascript">
-                            <div class="skill-icon">⚡</div>
-                            <span>JAVASCRIPT</span>
-                        </div>
-                        <div class="skill-item" data-skill="html">
-                            <div class="skill-icon">🌐</div>
-                            <span>HTML5</span>
-                        </div>
-                        <div class="skill-item" data-skill="css">
-                            <div class="skill-icon">🎨</div>
-                            <span>CSS3</span>
-                        </div>
-                        <div class="skill-item" data-skill="react">
-                            <div class="skill-icon">⚛️</div>
-                            <span>REACT</span>
-                        </div>
-                        <div class="skill-item" data-skill="node">
-                            <div class="skill-icon">🟢</div>
-                            <span>NODE.JS</span>
-                        </div>
                     </div>
-                </div>
-
-                <div class="footer-message">
-                    <p>✨ Building the future, one line of code at a time ✨</p>
                 </div>
             </section>
 
-            <!-- About Section -->
-            <section id="about" class="section">
+             <!-- About Section -->
+             <section id="about" class="section">
                 <h2>About</h2>
                 <div class="about-content">
                     <p>Hello! I'm a passionate developer who loves creating meaningful solutions through code.</p>
@@ -154,5 +139,95 @@
 
     <script src="config.js"></script>
     <script src="script.js"></script>
+    <!-- Three.js and Globe.gl CDN -->
+    <script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+    <script src="https://unpkg.com/globe.gl@2.36.0/dist/globe.gl.min.js"></script>
+    <script>
+      // Only run on home section
+      const globeContainer = document.getElementById('globe-container');
+      function shouldShowGlobe() {
+        return window.innerWidth > 600;
+      }
+      if (globeContainer && shouldShowGlobe()) {
+        // Responsive globe size
+        function getGlobeSize() {
+          return window.innerWidth <= 600 ? Math.min(window.innerWidth * 0.55, 600) : 450;
+        }
+        let currentGlobeSize = getGlobeSize();
+        function createGlobe() {
+          // Remove previous globe canvas if exists
+          while (globeContainer.firstChild) {
+            globeContainer.removeChild(globeContainer.firstChild);
+          }
+          const globeSize = getGlobeSize();
+          globeContainer.style.width = `${globeSize}px`;
+          globeContainer.style.height = `${globeSize}px`;
+          // Choose globe image based on local time
+          function getGlobeImageUrl() {
+            const hour = new Date().getHours();
+            if (hour >= 19 || hour < 7) {
+              return 'https://unpkg.com/three-globe/example/img/earth-night.jpg';
+            } else {
+              return 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg';
+            }
+          }
+          const world = Globe()
+            .globeImageUrl(getGlobeImageUrl())
+            .backgroundColor('rgba(0,0,0,0)')
+            .width(globeSize)
+            .height(globeSize)
+            .showAtmosphere(true)
+            .atmosphereColor('#003285')
+            .atmosphereAltitude(0.10)
+            (globeContainer);
+          // Center the globe over the US
+          world.pointOfView({ lat: 39, lng: -98, altitude: 1.6 }, 0);
+          // List of visited states
+          const visitedStates = [
+            'Louisiana', 'Mississippi', 'Alabama', 'Georgia', 'Florida',
+            'Tennessee', 'Texas', 'Oklahoma', 'Kentucky', 'Missouri',
+            'Ohio','Arkansas'
+          ];
+          // Fetch US states GeoJSON and add polygons
+          fetch('https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json')
+            .then(res => res.json())
+            .then(statesGeoJson => {
+              world.polygonsData(statesGeoJson.features)
+                .polygonCapColor(feat =>
+                  visitedStates.includes(feat.properties.name)
+                    ? 'orange'
+                    : 'rgba(0,0,0,0)'
+                )
+                .polygonSideColor(() => 'rgba(140,140,140,0.15)')
+                .polygonStrokeColor(() => '#111')
+                .polygonAltitude(feat =>
+                  visitedStates.includes(feat.properties.name) ? 0.03 : 0.01
+                );
+            });
+          // Make globe spin
+          world.controls().autoRotate = true;
+          world.controls().autoRotateSpeed = 0.6;
+        }
+        // Initial globe
+        createGlobe();
+        // Listen for resize and re-create globe if size category changes
+        window.addEventListener('resize', () => {
+          const shouldShow = shouldShowGlobe();
+          if (!shouldShow) {
+            while (globeContainer.firstChild) {
+              globeContainer.removeChild(globeContainer.firstChild);
+            }
+            globeContainer.style.width = '';
+            globeContainer.style.height = '';
+            return;
+          }
+          const newSize = getGlobeSize();
+          if (newSize !== currentGlobeSize) {
+            currentGlobeSize = newSize;
+            createGlobe();
+          }
+        });
+      }
+    </script>
 </body>
 </html> 

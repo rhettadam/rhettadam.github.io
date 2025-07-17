@@ -8,7 +8,7 @@ const CONFIG = {
         profession: "Undergraduate Student and FRC Mentor",
         pronouns: "He/Him",
         birthDate: new Date(2006, 1, 23), // Year, Month-1, Day
-        domain: "rhettadam.dev"
+        domain: "rhettadam.github.io"
     },
     
     // Contact Information
@@ -27,7 +27,6 @@ const CONFIG = {
         { name: "GIT", icon: "static/logos/git.png", color: "#f05032" },
         { name: "BASH", icon: "static/logos/bash.png", color: "#4eaa25" },
         { name: "POSTGRES", icon: "static/logos/postgres.png", color: "#336791" },
-        { name: "SQLITE", icon: "static/logos/sqlite.png", color: "#003b57" }
     ],
     
     // Projects
