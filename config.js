@@ -120,9 +120,6 @@ const CONFIG = {
         description: "I'm currently pursuing a Bachelor of Science in Earth and Environmental Sciences with a Minor in Data Science. I also mentor for 7525 The Pioneers, a high school FIRST Robotics Competition team."
     },
     
-    // Footer Message
-    footerMessage: "🤖 Building robots and the future, one line of code at a time 🤖",
-    
     // Theme Colors (optional - advanced customization)
     theme: {
         primary: "#0c1821",

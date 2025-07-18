@@ -3,17 +3,23 @@
     "static/graphics/1912/2024 Game Shirt.png",
     "static/graphics/1912/2024 Team Shirt.png",
     "static/graphics/1912/Pulsar Sketch.png",
+    "static/graphics/1912/Pulsar Logo.png",
     "static/graphics/1912/Pulsar Thumbnail.png",
-    "static/graphics/1912/Pit Design.png",
+    "static/graphics/1912/2024 Burnie Pin A.png",
+    "static/graphics/1912/2024 Burnie Pin B.png",
+    "static/graphics/1912/Pit Design A.png",
+    "static/graphics/1912/Pit Design B.png",
     "static/graphics/1912/Jobs Poster.png",
+    "static/graphics/1912/Concept Banner.png",
     "static/graphics/1912/More Than Robots.png",
-    "static/graphics/1912/Jimmy Sketch.png",
+    "static/graphics/1912/1912&8956 Logos.png",
+    "static/graphics/1912/Brand Standards.png",
     "static/graphics/1912/Poster 3.png",
     "static/graphics/1912/Poster 2.png",
     "static/graphics/1912/Poster 1.png",
     "static/graphics/1912/2023 Pin 1.png",
     "static/graphics/1912/2023 Pin 2.png",
-    "static/graphics/1912/2024 Burnie Pin.png"
+    "static/graphics/1912/2023 Pin 3.png"
   ],
   "nc2": [
     "static/graphics/nc2/Logo.png",
@@ -34,7 +40,8 @@
   "csvue": [
     "static/graphics/csvue/Logo.png",
     "static/graphics/csvue/Table.png",
-    "static/graphics/csvue/Visualization.png",
+    "static/graphics/csvue/Visualization 1.png",
+    "static/graphics/csvue/Visualization 2.png",
     "static/graphics/csvue/Statistics.png"
   ]
 } 
