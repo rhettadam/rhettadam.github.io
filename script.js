@@ -132,6 +132,10 @@ function populateContent() {
         emailLink.querySelector('.link-value').textContent = CONFIG.contact.email;
     }
     
+
+    
+
+    
     // Update footer message
     const footerMessage = document.querySelector('.footer-message p');
     if (footerMessage) {
@@ -255,12 +259,135 @@ function setupGalleryBackButton() {
     }
 }
 
+// GitHub Activity Feed Functionality
+async function fetchGitHubActivity() {
+    const githubFeed = document.getElementById('github-feed');
+    if (!githubFeed) return;
+
+    try {
+        // Extract username from GitHub URL in config
+        const githubUrl = CONFIG.contact.github;
+        const username = githubUrl.split('/').pop();
+        
+        // Fetch recent activity using GitHub API
+        const response = await fetch(`https://api.github.com/users/${username}/events?per_page=10`);
+        
+        if (!response.ok) {
+            throw new Error(`GitHub API error: ${response.status}`);
+        }
+        
+        const events = await response.json();
+        
+        // Filter and format events
+        const activityItems = events
+            .filter(event => ['PushEvent', 'CreateEvent', 'ForkEvent', 'WatchEvent'].includes(event.type))
+            .slice(0, 8)
+            .map(event => formatGitHubEvent(event, username));
+        
+        if (activityItems.length === 0) {
+            githubFeed.innerHTML = '<div class="github-activity-empty">No recent activity found</div>';
+            return;
+        }
+        
+        githubFeed.innerHTML = activityItems.join('');
+        
+    } catch (error) {
+        console.error('Error fetching GitHub activity:', error);
+        githubFeed.innerHTML = `
+            <div class="github-activity-error">
+                Unable to load recent activity<br>
+                <small>Check out my <a href="${CONFIG.contact.github}" target="_blank" style="color: #4a9eff;">GitHub profile</a> instead</small>
+            </div>
+        `;
+    }
+}
+
+function formatGitHubEvent(event, username) {
+    const eventTime = new Date(event.created_at);
+    const timeAgo = getTimeAgo(eventTime);
+    
+    let icon, message;
+    
+    switch (event.type) {
+        case 'PushEvent':
+            icon = '📝';
+            const commits = event.payload.commits || [];
+            const commitCount = commits.length;
+            const repoName = event.repo.name;
+            const commitMessage = commits.length > 0 ? commits[0].message : 'Updated repository';
+            message = `Pushed ${commitCount} commit${commitCount !== 1 ? 's' : ''} to <a href="https://github.com/${repoName}" class="github-activity-repo" target="_blank">${repoName.split('/')[1]}</a>`;
+            if (commitMessage.length > 50) {
+                message += `<br><small>${commitMessage.substring(0, 50)}...</small>`;
+            } else {
+                message += `<br><small>${commitMessage}</small>`;
+            }
+            break;
+            
+        case 'CreateEvent':
+            icon = '🆕';
+            const refType = event.payload.ref_type;
+            const refName = event.payload.ref;
+            const repoName2 = event.repo.name;
+            message = `Created ${refType} <strong>${refName}</strong> in <a href="https://github.com/${repoName2}" class="github-activity-repo" target="_blank">${repoName2.split('/')[1]}</a>`;
+            break;
+            
+        case 'ForkEvent':
+            icon = '🍴';
+            const forkedRepo = event.payload.forkee.full_name;
+            const originalRepo = event.repo.name;
+            message = `Forked <a href="https://github.com/${originalRepo}" class="github-activity-repo" target="_blank">${originalRepo.split('/')[1]}</a> to <a href="https://github.com/${forkedRepo}" class="github-activity-repo" target="_blank">${forkedRepo.split('/')[1]}</a>`;
+            break;
+            
+        case 'WatchEvent':
+            icon = '⭐';
+            const watchedRepo = event.repo.name;
+            message = `Starred <a href="https://github.com/${watchedRepo}" class="github-activity-repo" target="_blank">${watchedRepo.split('/')[1]}</a>`;
+            break;
+            
+        default:
+            icon = '📋';
+            message = `Activity in <a href="https://github.com/${event.repo.name}" class="github-activity-repo" target="_blank">${event.repo.name.split('/')[1]}</a>`;
+    }
+    
+    return `
+        <div class="github-activity-item">
+            <div class="github-activity-icon">${icon}</div>
+            <div class="github-activity-content">
+                <div class="github-activity-message">${message}</div>
+                <div class="github-activity-time">${timeAgo}</div>
+            </div>
+        </div>
+    `;
+}
+
+function getTimeAgo(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) {
+        return 'just now';
+    } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 2592000) {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days} day${days !== 1 ? 's' : ''} ago`;
+    } else {
+        const months = Math.floor(diffInSeconds / 2592000);
+        return `${months} month${months !== 1 ? 's' : ''} ago`;
+    }
+}
+
 // Initialize the website
 function init() {
     // Populate content from config
     populateContent();
     populateGraphicsGalleries();
     setupGalleryBackButton();
+    fetchGitHubActivity(); // Fetch GitHub activity on page load
     
     // Update datetime immediately and then every second
     updateDateTime();
@@ -411,6 +538,59 @@ function addInteractiveFeatures() {
             setTimeout(() => {
                 profilePic.style.transform = 'scale(1) rotate(0deg)';
             }, 200);
+        });
+    }
+    
+    // Discord clipboard functionality
+    const discordLink = document.getElementById('discord-link');
+    if (discordLink) {
+        discordLink.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(CONFIG.contact.discord);
+                
+                // Visual feedback
+                discordLink.classList.add('copied');
+                
+                // Add text indicator
+                const textIndicator = document.createElement('span');
+                textIndicator.className = 'copy-indicator';
+                textIndicator.textContent = 'Copied to clipboard';
+                discordLink.appendChild(textIndicator);
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    discordLink.classList.remove('copied');
+                    if (textIndicator.parentNode) {
+                        textIndicator.parentNode.removeChild(textIndicator);
+                    }
+                }, 2000);
+                
+            } catch (err) {
+                console.error('Failed to copy to clipboard:', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = CONFIG.contact.discord;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Visual feedback
+                discordLink.classList.add('copied');
+                
+                // Add text indicator
+                const textIndicator = document.createElement('span');
+                textIndicator.className = 'copy-indicator';
+                textIndicator.textContent = 'Copied to clipboard';
+                discordLink.appendChild(textIndicator);
+                
+                setTimeout(() => {
+                    discordLink.classList.remove('copied');
+                    if (textIndicator.parentNode) {
+                        textIndicator.parentNode.removeChild(textIndicator);
+                    }
+                }, 2000);
+            }
         });
     }
     

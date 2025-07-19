@@ -16,6 +16,8 @@ const CONFIG = {
         email: "rhettadambusiness@gmail.com",
         github: "https://github.com/rhettadam",
         linkedin: "https://linkedin.com/in/rhettadam",
+        instagram: "https://www.instagram.com/rhett.adam/",
+        discord: "radam."
     },
     
     // Skills & Technologies

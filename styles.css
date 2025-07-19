@@ -5,6 +5,19 @@
     box-sizing: border-box;
 }
 
+/* Screen Reader Only - for accessibility and SEO */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 @font-face {
     font-family: 'TerminalCustom';
     src: url('static/terminal.ttf') format('truetype');
@@ -88,6 +101,36 @@ body {
     height: 1px;
     background: linear-gradient(90deg, transparent, #e6d5c3, transparent);
     margin: 20px 0 40px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.separator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(74, 158, 255, 0.3), rgba(230, 213, 195, 0.8), rgba(74, 158, 255, 0.3), transparent);
+    animation: flowGradient 6s ease-in-out infinite;
+}
+
+@keyframes flowGradient {
+    0% {
+        left: -100%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        left: 100%;
+        opacity: 0;
+    }
 }
 
 /* Main Content */
@@ -231,6 +274,17 @@ body {
   word-break: break-word;
 }
 
+.team-link {
+  color: #4a9eff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.team-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
 .info-item {
     display: flex;
     gap: 10px;
@@ -285,6 +339,107 @@ body {
 
 .link-value {
     color: #d2691e;
+}
+
+.discord-link {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.discord-link:hover {
+    background-color: rgba(74, 158, 255, 0.1);
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: -4px -8px;
+}
+
+.discord-link:hover .link-value {
+    color: #ffffff;
+}
+
+.discord-link.copied {
+    background-color: rgba(76, 175, 80, 0.2);
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: -4px -8px;
+}
+
+.discord-link.copied .link-value {
+    color: #4caf50;
+}
+
+/* Social Media Icons */
+.social-media-section {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(230, 213, 195, 0.1);
+    border-bottom: 1px solid rgba(230, 213, 195, 0.1);
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.social-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 0px solid rgba(230, 213, 195, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.social-icon-link:hover {
+    background: rgba(74, 158, 255, 0.1);
+    border-color: rgba(74, 158, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.social-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(74%) sepia(11%) saturate(638%) hue-rotate(358deg) brightness(89%) contrast(86%);
+    transition: filter 0.3s ease;
+}
+
+.social-icon-link:hover .social-icon {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
+}
+
+.discord-icon.copied {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.4);
+}
+
+.discord-icon.copied .social-icon {
+    filter: brightness(0) saturate(100%) invert(67%) sepia(11%) saturate(638%) hue-rotate(93deg) brightness(89%) contrast(86%);
+}
+
+.copy-indicator {
+    position: absolute;
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(76, 175, 80, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    animation: fadeInOut 2s ease-in-out;
+    z-index: 10;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-50%) translateX(-10px); }
+    20% { opacity: 1; transform: translateY(-50%) translateX(0); }
+    80% { opacity: 1; transform: translateY(-50%) translateX(0); }
+    100% { opacity: 0; transform: translateY(-50%) translateX(-10px); }
 }
 
 /* Skills Section - Bar Style */
@@ -722,4 +877,161 @@ body {
     aspect-ratio: 1 / 1;
     display: block;
     background: #222;
+} 
+
+/* GitHub Activity Feed Styles */
+.github-activity-section {
+    margin-top: 40px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(230, 213, 195, 0.1);
+}
+
+.github-activity-section h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.github-feed {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #888888;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(230, 213, 195, 0.1);
+    border-top: 3px solid #4a9eff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.github-activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(230, 213, 195, 0.1);
+    transition: background-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.github-activity-item:last-child {
+    border-bottom: none;
+}
+
+.github-activity-item:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.github-activity-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    color: #4a9eff;
+}
+
+.github-activity-content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.github-activity-message {
+    color: #e6d5c3;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.github-activity-repo {
+    color: #4a9eff;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.github-activity-repo:hover {
+    text-decoration: underline;
+}
+
+.github-activity-time {
+    color: #888888;
+    font-size: 0.8rem;
+}
+
+.github-activity-error {
+    color: #ff6b6b;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+}
+
+.github-activity-empty {
+    color: #888888;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Responsive adjustments for GitHub feed */
+@media (max-width: 768px) {
+    .github-activity-section {
+        margin-top: 30px;
+        padding: 15px;
+    }
+    
+    .github-activity-item {
+        padding: 10px 0;
+    }
+    
+    .github-activity-message {
+        font-size: 0.85rem;
+    }
+    
+    .social-media-section {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding: 15px 0;
+        gap: 15px;
+    }
+    
+    .social-icon-link {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .social-icon {
+        width: 18px;
+        height: 18px;
+    }
 } 

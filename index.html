@@ -20,27 +20,28 @@
 <body>
     <div class="container">
         <!-- Header -->
-        <header class="header">
+        <header class="header" role="banner">
             <div class="header-left">
                 <div class="domain">rhettadam.github.io</div>
-                <nav class="navigation">
-                    <a href="#home" class="nav-link active">/home</a>
+                <nav class="navigation" role="navigation" aria-label="Main navigation">
+                    <a href="#home" class="nav-link active" aria-current="page">/home</a>
                     <a href="#about" class="nav-link">/about</a>
                     <a href="#projects" class="nav-link">/projects</a>
                     <a href="#graphics" class="nav-link">/graphics</a>
                 </nav>
             </div>
             <div class="header-right">
-                <div class="datetime" id="datetime"></div>
+                <div class="datetime" id="datetime" aria-label="Current date and time"></div>
             </div>
         </header>
 
         <div class="separator"></div>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" role="main">
             <!-- Home Section -->
-            <section id="home" class="section active">
+            <section id="home" class="section active" aria-labelledby="home-heading">
+                <h1 id="home-heading" class="sr-only">Rhett Adam - Home</h1>
               <div class="home-flex">
                 <div class="profile-col">
                   <div class="profile-section">
@@ -51,8 +52,8 @@
                           <div class="profile-description">
                               robotics nerd<br>
                               data wrangler<br>
-                              FRC 7525/7917 mentor<br>
-                              FRC 1912 alum<br>
+                              <a href="https://www.adroitstart.org/" target="_blank" class="team-link">FRC 7525/7917 mentor</a><br>
+                              <a href="https://team1912.org/" target="_blank" class="team-link">FRC 1912 alum</a><br>
                           </div>
                       </div>
                   </div>
@@ -75,77 +76,63 @@
                     </div>
                 </div>
 
+                <!-- Social Media Icons -->
+                <div class="social-media-section">
+                    <a href="https://linkedin.com/in/rhettadam" class="social-icon-link" target="_blank" title="LinkedIn">
+                        <img src="static/logos/linkedin.png" alt="LinkedIn" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com/rhett.adam/" class="social-icon-link" target="_blank" title="Instagram">
+                        <img src="static/logos/instagram.png" alt="Instagram" class="social-icon">
+                    </a>
+                    <div class="social-icon-link discord-icon" id="discord-link" title="Discord: radam.">
+                        <img src="static/logos/discord.png" alt="Discord" class="social-icon">
+                    </div>
+                </div>
+
                 <div class="skills-section">
                     <div class="skills-grid">
+                    </div>
+                </div>
+
+                <!-- GitHub Activity Feed -->
+                <div class="github-activity-section">
+                    <h3>Recent GitHub Activity</h3>
+                    <div class="github-feed" id="github-feed">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Loading recent activity...</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
              <!-- About Section -->
-             <section id="about" class="section">
-                <h2>About</h2>
+             <section id="about" class="section" aria-labelledby="about-heading">
+                <h2 id="about-heading">About</h2>
                 <div class="about-content">
-                    <p>Hello! I'm a passionate developer who loves creating meaningful solutions through code.</p>
-                    <p>When I'm not coding, you can find me exploring new technologies, contributing to open source projects, or sharing knowledge with the developer community.</p>
+                    <p></p>
+                    <p></p>
                     
                     <h3>Experience</h3>
-                    <div class="experience-item">
-                        <div class="exp-title">Software Developer</div>
-                        <div class="exp-company">Company Name</div>
-                        <div class="exp-period">2023 - Present</div>
-                    </div>
                     
                     <h3>Education</h3>
-                    <div class="education-item">
-                        <div class="edu-degree">Bachelor's in Computer Science</div>
-                        <div class="edu-school">University Name</div>
-                        <div class="edu-period">2020 - 2024</div>
-                    </div>
                     
                     <h3>Honors and Awards</h3>
                     <div class="awards-list" id="awards-list">
-                        <!-- Awards will be populated from config -->
                     </div>
                 </div>
             </section>
 
             <!-- Projects Section -->
-            <section id="projects" class="section">
-                <h2>Projects</h2>
+            <section id="projects" class="section" aria-labelledby="projects-heading">
+                <h2 id="projects-heading">Projects</h2>
                 <div class="projects-grid">
-                    <div class="project-card">
-                        <div class="project-image">
-                            <img src="https://via.placeholder.com/300x200/2a2a2a/4a9eff?text=Project+1" alt="Project 1">
-                        </div>
-                        <div class="project-info">
-                            <h3>Project Name</h3>
-                            <p>A brief description of what this project does and the technologies used.</p>
-                            <div class="project-links">
-                                <a href="#" class="project-link">Live Demo</a>
-                                <a href="#" class="project-link">GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card">
-                        <div class="project-image">
-                            <img src="https://via.placeholder.com/300x200/2a2a2a/4a9eff?text=Project+2" alt="Project 2">
-                        </div>
-                        <div class="project-info">
-                            <h3>Another Project</h3>
-                            <p>Another cool project description with details about the implementation.</p>
-                            <div class="project-links">
-                                <a href="#" class="project-link">Live Demo</a>
-                                <a href="#" class="project-link">GitHub</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
 
             <!-- Graphics Section -->
-            <section id="graphics" class="section">
-                <h2>Graphics</h2>
+            <section id="graphics" class="section" aria-labelledby="graphics-heading">
+                <h2 id="graphics-heading">Graphics</h2>
                 <div class="graphics-galleries">
                     <!-- Galleries will be dynamically populated here -->
                 </div>
